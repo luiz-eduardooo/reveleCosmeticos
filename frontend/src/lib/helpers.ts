@@ -1,13 +1,17 @@
 import { AxiosError } from 'axios'
 import type { ErroResponse } from '@/types'
 
+/* ──────────────── Formatação ──────────────── */
 
+/** Formata número como moeda brasileira (R$). */
 export function formatCurrency(value: number): string {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   }).format(value ?? 0)
 }
+
+/** Formata data-hora ISO para o formato brasileiro. */
 export function formatDateTime(iso: string): string {
   if (!iso) return '—'
   const d = new Date(iso)
@@ -21,6 +25,7 @@ export function formatDateTime(iso: string): string {
   }).format(d)
 }
 
+/** Formata apenas a data (sem hora). */
 export function formatDate(iso: string): string {
   if (!iso) return '—'
   const d = new Date(iso)
@@ -32,7 +37,7 @@ export function formatDate(iso: string): string {
   }).format(d)
 }
 
-
+/** Iniciais para fallback de avatar (ex.: "Ana Costa" -> "AC"). */
 export function getInitials(name: string): string {
   if (!name?.trim()) return '?'
   const parts = name.trim().split(/\s+/)
@@ -40,6 +45,7 @@ export function getInitials(name: string): string {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
 }
 
+/** Encurta um UUID para exibição (ex.: "a1b2c3d4...e5f6"). */
 export function shortId(id: string): string {
   if (!id || id.length <= 13) return id
   return `${id.slice(0, 8)}…${id.slice(-4)}`
@@ -47,6 +53,10 @@ export function shortId(id: string): string {
 
 /* ──────────────── Tratamento de erro ──────────────── */
 
+/**
+ * Extrai uma mensagem legível de qualquer erro de chamada à API.
+ * Reconhece o formato estruturado ErroResponse do backend.
+ */
 export function getErrorMessage(error: unknown): string {
   if (error instanceof AxiosError) {
     const data = error.response?.data as ErroResponse | string | undefined
@@ -76,6 +86,10 @@ export function getErrorMessage(error: unknown): string {
   return 'Ocorreu um erro inesperado.'
 }
 
+/**
+ * Extrai erros de campo do ErroResponse, para exibir inline em formulários.
+ * Retorna um mapa { campo: mensagem } ou objeto vazio.
+ */
 export function getFieldErrors(error: unknown): Record<string, string> {
   if (error instanceof AxiosError) {
     const data = error.response?.data as ErroResponse | undefined
@@ -111,6 +125,7 @@ export const storage = {
       /* ignora */
     }
   },
+  /** String crua, sem JSON.stringify (usado para o token JWT). */
   getRaw(key: string): string | null {
     try {
       return localStorage.getItem(key)
@@ -127,6 +142,7 @@ export const storage = {
   },
 }
 
-export function cn(...classes: (string | false | null | undefined)[]): string {
-  return classes.filter(Boolean).join(' ')
+/** Concatena classes condicionalmente (mini utilitário tipo clsx). */
+export function cn(...classes: unknown[]): string {
+  return classes.filter((c): c is string => typeof c === 'string' && c.length > 0).join(' ')
 }

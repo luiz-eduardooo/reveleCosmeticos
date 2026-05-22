@@ -1,27 +1,32 @@
-
+/** Constantes globais da aplicação. */
 
 export const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'
 
+/** Chaves de localStorage. */
 export const STORAGE_KEYS = {
   token: 'revele.token',
   user: 'revele.user',
   cart: 'revele.cart',
 } as const
 
+/** Caminhos de rota — fonte única para navegação e guards. */
 export const ROUTES = {
+  // públicas
   home: '/',
   produtos: '/produtos',
   produtoDetalhe: (id: number | string = ':id') => `/produtos/${id}`,
   clube: '/clube',
   login: '/login',
   cadastro: '/cadastro',
+  // cliente autenticado
   carrinho: '/carrinho',
   checkout: '/checkout',
   pedidos: '/pedidos',
   pedidoDetalhe: (id: string = ':id') => `/pedidos/${id}`,
   assinatura: '/assinatura',
   perfil: '/perfil',
+  // admin
   admin: '/admin',
   adminProdutos: '/admin/produtos',
   adminProdutoNovo: '/admin/produtos/novo',
@@ -30,9 +35,12 @@ export const ROUTES = {
   adminPedidos: '/admin/pedidos',
   adminUsuarios: '/admin/usuarios',
   adminAssinaturas: '/admin/assinaturas',
+  // erro
   forbidden: '/403',
   notFound: '/404',
 } as const
+
+/** Rótulos legíveis para os enums da API. */
 export const INTERVALO_LABEL: Record<string, string> = {
   MENSAL: 'Mensal',
   TRIMESTRAL: 'Trimestral',
