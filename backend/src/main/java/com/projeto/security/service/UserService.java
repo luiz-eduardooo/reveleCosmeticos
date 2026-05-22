@@ -1,10 +1,7 @@
 package com.projeto.security.service;
 
 import com.projeto.security.DTOS.*;
-import com.projeto.security.DTOS.user.UserCadastroDTO;
-import com.projeto.security.DTOS.user.UserLoginDTO;
-import com.projeto.security.DTOS.user.UserResponseDTO;
-import com.projeto.security.DTOS.user.UserUpdateDTO;
+import com.projeto.security.DTOS.user.*;
 import com.projeto.security.entities.User;
 import com.projeto.security.exception.UserAlreadyExistsException;
 import com.projeto.security.exception.UserDistinctException;
@@ -41,10 +38,10 @@ public class UserService {
         return toResponseDTO(userSalvo);
     }
 
-    public TokenResponseDTO loginUser(UserLoginDTO dados){
+    public LoginResponseDTO loginUser(UserLoginDTO dados){
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(dados.email(), dados.password());
         User user = (User) authenticationManager.authenticate(authentication).getPrincipal();
-        return new TokenResponseDTO(tokenService.gerarToken(user));
+        return new LoginResponseDTO(tokenService.gerarToken(user), toResponseDTO(user));
     }
 
     public UserResponseDTO putUser(UUID id, UserUpdateDTO dados, User userLogado){
@@ -74,7 +71,7 @@ public class UserService {
     }
 
     private UserResponseDTO toResponseDTO(User userLogado){
-        return new UserResponseDTO(userLogado.getEmail(), userLogado.getCpf(), userLogado.getName(), userLogado.getId());
+        return new UserResponseDTO(userLogado.getEmail(), userLogado.getRole(), userLogado.getName(), userLogado.getId());
     }
 
 }

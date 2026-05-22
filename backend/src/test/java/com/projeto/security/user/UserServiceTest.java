@@ -1,15 +1,12 @@
-package com.projeto.security.service;
-
-import com.projeto.security.DTOS.TokenResponseDTO;
-import com.projeto.security.DTOS.user.UserCadastroDTO;
-import com.projeto.security.DTOS.user.UserLoginDTO;
-import com.projeto.security.DTOS.user.UserResponseDTO;
-import com.projeto.security.DTOS.user.UserUpdateDTO;
+package com.projeto.security.user;
+import com.projeto.security.DTOS.user.*;
 import com.projeto.security.entities.User;
 import com.projeto.security.exception.UserAlreadyExistsException;
 import com.projeto.security.exception.UserDistinctException;
 import com.projeto.security.exception.UsuarioNaoEncontradoException;
 import com.projeto.security.repositories.UserRepository;
+import com.projeto.security.service.TokenService;
+import com.projeto.security.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -95,7 +92,7 @@ class UserServiceTest {
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(auth);
         when(tokenService.gerarToken(userTeste)).thenReturn("jwt-token-fake");
 
-        TokenResponseDTO result = service.loginUser(dto);
+        LoginResponseDTO result = service.loginUser(dto);
 
         assertEquals("jwt-token-fake", result.token());
         verify(authenticationManager).authenticate(any(UsernamePasswordAuthenticationToken.class));

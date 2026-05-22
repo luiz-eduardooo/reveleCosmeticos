@@ -1,10 +1,7 @@
 package com.projeto.security.controllers;
 
 import com.projeto.security.DTOS.*;
-import com.projeto.security.DTOS.user.UserCadastroDTO;
-import com.projeto.security.DTOS.user.UserLoginDTO;
-import com.projeto.security.DTOS.user.UserResponseDTO;
-import com.projeto.security.DTOS.user.UserUpdateDTO;
+import com.projeto.security.DTOS.user.*;
 import com.projeto.security.entities.User;
 import com.projeto.security.service.UserService;
 import jakarta.validation.Valid;
@@ -31,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponseDTO> userLogin(@RequestBody @Valid UserLoginDTO dto){
+    public ResponseEntity<LoginResponseDTO> userLogin(@RequestBody @Valid UserLoginDTO dto){
         return ResponseEntity.ok().body(service.loginUser(dto));
     }
 
