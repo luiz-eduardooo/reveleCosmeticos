@@ -1,39 +1,32 @@
-import { createBrowserRouter, Outlet } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 import { ROUTES } from '@/lib/constants'
 import { AdminRoute, ProtectedRoute, PublicOnlyRoute } from './guards'
 import { PagePlaceholder } from '@/components/PagePlaceholder'
+import { PublicLayout } from '@/layouts/PublicLayout'
+import { HomePage } from '@/pages/HomePage'
+import { CatalogoPage } from '@/pages/CatalogoPage'
+import { ProdutoDetalhePage } from '@/pages/ProdutoDetalhePage'
+import { ClubePage } from '@/pages/ClubePage'
 
 /**
  * Definição central de rotas.
  *
  * Estrutura por área:
- *  - Públicas        -> layout público (Header/Footer) — Fase 3
- *  - Auth            -> sem layout, bloqueadas para logados
- *  - Cliente (auth)  -> ProtectedRoute + layout autenticado — Fase 5
+ *  - Públicas        -> PublicLayout (Header/Footer) — Fase 3 ✓
+ *  - Auth            -> sem layout, bloqueadas para logados — Fase 4
+ *  - Cliente (auth)  -> ProtectedRoute + PublicLayout — Fase 5
  *  - Admin           -> AdminRoute + layout admin — Fase 6
- *
- * Layouts e páginas reais entram nas fases seguintes; por ora os
- * elementos usam PagePlaceholder para que o roteamento e os guards
- * já sejam testáveis de ponta a ponta.
  */
-
-/** Stub de layout público — substituído na Fase 3 pelo PublicLayout real. */
-function PublicLayoutStub() {
-  return <Outlet />
-}
 
 export const router = createBrowserRouter([
   /* ─────────── Área pública ─────────── */
   {
-    element: <PublicLayoutStub />,
+    element: <PublicLayout />,
     children: [
-      { path: ROUTES.home, element: <PagePlaceholder title="Home" /> },
-      { path: ROUTES.produtos, element: <PagePlaceholder title="Catálogo" /> },
-      {
-        path: ROUTES.produtoDetalhe(),
-        element: <PagePlaceholder title="Detalhe do produto" />,
-      },
-      { path: ROUTES.clube, element: <PagePlaceholder title="Clube Revele" /> },
+      { path: ROUTES.home, element: <HomePage /> },
+      { path: ROUTES.produtos, element: <CatalogoPage /> },
+      { path: ROUTES.produtoDetalhe(), element: <ProdutoDetalhePage /> },
+      { path: ROUTES.clube, element: <ClubePage /> },
     ],
   },
 
@@ -50,18 +43,35 @@ export const router = createBrowserRouter([
   {
     element: <ProtectedRoute />,
     children: [
-      { path: ROUTES.carrinho, element: <PagePlaceholder title="Carrinho" /> },
-      { path: ROUTES.checkout, element: <PagePlaceholder title="Checkout" /> },
-      { path: ROUTES.pedidos, element: <PagePlaceholder title="Meus pedidos" /> },
       {
-        path: ROUTES.pedidoDetalhe(),
-        element: <PagePlaceholder title="Detalhe do pedido" />,
+        element: <PublicLayout />,
+        children: [
+          {
+            path: ROUTES.carrinho,
+            element: <PagePlaceholder title="Carrinho" />,
+          },
+          {
+            path: ROUTES.checkout,
+            element: <PagePlaceholder title="Checkout" />,
+          },
+          {
+            path: ROUTES.pedidos,
+            element: <PagePlaceholder title="Meus pedidos" />,
+          },
+          {
+            path: ROUTES.pedidoDetalhe(),
+            element: <PagePlaceholder title="Detalhe do pedido" />,
+          },
+          {
+            path: ROUTES.assinatura,
+            element: <PagePlaceholder title="Minha assinatura" />,
+          },
+          {
+            path: ROUTES.perfil,
+            element: <PagePlaceholder title="Perfil" />,
+          },
+        ],
       },
-      {
-        path: ROUTES.assinatura,
-        element: <PagePlaceholder title="Minha assinatura" />,
-      },
-      { path: ROUTES.perfil, element: <PagePlaceholder title="Perfil" /> },
     ],
   },
 
@@ -98,7 +108,13 @@ export const router = createBrowserRouter([
   },
 
   /* ─────────── Páginas de erro ─────────── */
-  { path: ROUTES.forbidden, element: <PagePlaceholder title="403 — Sem acesso" /> },
-  { path: ROUTES.notFound, element: <PagePlaceholder title="404 — Não encontrado" /> },
+  {
+    path: ROUTES.forbidden,
+    element: <PagePlaceholder title="403 — Sem acesso" />,
+  },
+  {
+    path: ROUTES.notFound,
+    element: <PagePlaceholder title="404 — Não encontrado" />,
+  },
   { path: '*', element: <PagePlaceholder title="404 — Não encontrado" /> },
 ])
