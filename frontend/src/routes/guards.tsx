@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom'
+import { Navigate, Outlet, useLocation, useSearchParams } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { ROUTES } from '@/lib/constants'
 
@@ -64,13 +64,24 @@ export function AdminRoute() {
 
 /**
  * Guard inverso: bloqueia rotas de auth (login/cadastro) para quem
- * já está logado, evitando que um usuário autenticado veja o login.
+ * já está logado. Respeita ?redirect= para devolver o usuário ao
+ * destino que o trouxe ao login.
  */
 export function PublicOnlyRoute() {
   const { isAuthenticated, isInitializing } = useAuth()
+  const [searchParams] = useSearchParams()
 
   if (isInitializing) return <AuthLoading />
-  if (isAuthenticated) return <Navigate to={ROUTES.home} replace />
+
+  if (isAuthenticated) {
+    const redirect = searchParams.get('redirect')
+    return (
+      <Navigate
+        to={redirect ? decodeURIComponent(redirect) : ROUTES.home}
+        replace
+      />
+    )
+  }
 
   return <Outlet />
 }

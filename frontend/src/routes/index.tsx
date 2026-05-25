@@ -7,6 +7,14 @@ import { HomePage } from '@/pages/HomePage'
 import { CatalogoPage } from '@/pages/CatalogoPage'
 import { ProdutoDetalhePage } from '@/pages/ProdutoDetalhePage'
 import { ClubePage } from '@/pages/ClubePage'
+import { LoginPage } from '@/pages/LoginPage'
+import { CadastroPage } from '@/pages/CadastroPage'
+import { CarrinhoPage } from '@/pages/CarrinhoPage'
+import { CheckoutPage } from '@/pages/CheckoutPage'
+import { PedidosPage } from '@/pages/PedidosPage'
+import { PedidoDetalhePage } from '@/pages/PedidoDetalhePage'
+import { AssinaturaPage } from '@/pages/AssinaturaPage'
+import { PerfilPage } from '@/pages/PerfilPage'
 
 /**
  * Definição central de rotas.
@@ -34,8 +42,8 @@ export const router = createBrowserRouter([
   {
     element: <PublicOnlyRoute />,
     children: [
-      { path: ROUTES.login, element: <PagePlaceholder title="Login" /> },
-      { path: ROUTES.cadastro, element: <PagePlaceholder title="Cadastro" /> },
+      { path: ROUTES.login, element: <LoginPage /> },
+      { path: ROUTES.cadastro, element: <CadastroPage /> },
     ],
   },
 
@@ -46,30 +54,15 @@ export const router = createBrowserRouter([
       {
         element: <PublicLayout />,
         children: [
-          {
-            path: ROUTES.carrinho,
-            element: <PagePlaceholder title="Carrinho" />,
-          },
-          {
-            path: ROUTES.checkout,
-            element: <PagePlaceholder title="Checkout" />,
-          },
-          {
-            path: ROUTES.pedidos,
-            element: <PagePlaceholder title="Meus pedidos" />,
-          },
+          { path: ROUTES.carrinho, element: <CarrinhoPage /> },
+          { path: ROUTES.checkout, element: <CheckoutPage /> },
+          { path: ROUTES.pedidos, element: <PedidosPage /> },
           {
             path: ROUTES.pedidoDetalhe(),
-            element: <PagePlaceholder title="Detalhe do pedido" />,
+            element: <PedidoDetalhePage />,
           },
-          {
-            path: ROUTES.assinatura,
-            element: <PagePlaceholder title="Minha assinatura" />,
-          },
-          {
-            path: ROUTES.perfil,
-            element: <PagePlaceholder title="Perfil" />,
-          },
+          { path: ROUTES.assinatura, element: <AssinaturaPage /> },
+          { path: ROUTES.perfil, element: <PerfilPage /> },
         ],
       },
     ],
