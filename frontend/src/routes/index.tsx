@@ -15,6 +15,13 @@ import { PedidosPage } from '@/pages/PedidosPage'
 import { PedidoDetalhePage } from '@/pages/PedidoDetalhePage'
 import { AssinaturaPage } from '@/pages/AssinaturaPage'
 import { PerfilPage } from '@/pages/PerfilPage'
+import { AdminLayout } from '@/layouts/AdminLayout'
+import { AdminDashboardPage } from '@/pages/admin/AdminDashboardPage'
+import { AdminProdutosPage } from '@/pages/admin/AdminProdutosPage'
+import { AdminProdutoFormPage } from '@/pages/admin/AdminProdutoFormPage'
+import { AdminPedidosPage } from '@/pages/admin/AdminPedidosPage'
+import { AdminUsuariosPage } from '@/pages/admin/AdminUsuariosPage'
+import { AdminAssinaturasPage } from '@/pages/admin/AdminAssinaturasPage'
 
 /**
  * Definição central de rotas.
@@ -72,30 +79,35 @@ export const router = createBrowserRouter([
   {
     element: <AdminRoute />,
     children: [
-      { path: ROUTES.admin, element: <PagePlaceholder title="Dashboard" /> },
       {
-        path: ROUTES.adminProdutos,
-        element: <PagePlaceholder title="Admin · Produtos" />,
-      },
-      {
-        path: ROUTES.adminProdutoNovo,
-        element: <PagePlaceholder title="Admin · Novo produto" />,
-      },
-      {
-        path: ROUTES.adminProdutoEditar(),
-        element: <PagePlaceholder title="Admin · Editar produto" />,
-      },
-      {
-        path: ROUTES.adminPedidos,
-        element: <PagePlaceholder title="Admin · Pedidos" />,
-      },
-      {
-        path: ROUTES.adminUsuarios,
-        element: <PagePlaceholder title="Admin · Usuários" />,
-      },
-      {
-        path: ROUTES.adminAssinaturas,
-        element: <PagePlaceholder title="Admin · Assinaturas" />,
+        element: <AdminLayout />,
+        children: [
+          { path: ROUTES.admin, element: <AdminDashboardPage /> },
+          {
+            path: ROUTES.adminProdutos,
+            element: <AdminProdutosPage />,
+          },
+          {
+            path: ROUTES.adminProdutoNovo,
+            element: <AdminProdutoFormPage />,
+          },
+          {
+            path: ROUTES.adminProdutoEditar(),
+            element: <AdminProdutoFormPage />,
+          },
+          {
+            path: ROUTES.adminPedidos,
+            element: <AdminPedidosPage />,
+          },
+          {
+            path: ROUTES.adminUsuarios,
+            element: <AdminUsuariosPage />,
+          },
+          {
+            path: ROUTES.adminAssinaturas,
+            element: <AdminAssinaturasPage />,
+          },
+        ],
       },
     ],
   },
